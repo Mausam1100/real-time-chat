@@ -1,14 +1,19 @@
 import express from 'express'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const app = express()
 const server = createServer(app)
 const io = new Server(server, {
     cors: {
-        origin: '*'
+        origin: 'https://real-time-chat-client-tau.vercel.app/'
     }
 })
+
+const PORT = process.env.PORT || 3000
 
 const roomUsers = new Map<string, Set<string>>()
 
@@ -52,6 +57,6 @@ io.on('connection', (socket) => {
     })
 })
 
-server.listen(8000, () => {
-    console.log("Server is running!")
+server.listen(PORT, () => {
+    console.log("Server is running on port: ", PORT)
 })
